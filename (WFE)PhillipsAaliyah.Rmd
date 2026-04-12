@@ -1,0 +1,229 @@
+---
+title: "(07WFE) Assignment Instructions Template"
+output: html_document
+date: "04-9-2026"
+author: "Aaliyah Phillips"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### This assignment contains 10 questions. Use the code chunk under each question to type in your code. Name your assignment WFELastFirst.rmd where Last is your last name and First is your first name. Once you are done, submit the rmd file on Canvas. Upload your Rmd files to GitHub your assignment repository. Submit a screenshot to prove it.<br/><br/>
+
+**Q01.** Write a function named **math_operation** which allows math operations: addition, subtraction, multiplication and division. The function takes 3 arguments, **num1**, **num2**, and **oper** where **num1** and **num2** are two operands and **oper** is the operator with the value of (add, subtract, multiply, divide). Use switch() to perform the task.  It displays "Error occurred!" for default case. Here are some test cases:  
+
+**Function call**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Output**<br/>
+
+math_operation(10,20,"add")&emsp;&emsp;10 + 20 = 30<br/> 
+math_operation(5,2,"abcd")&emsp;&emsp;&nbsp;&nbsp;"Error occurred!"<br/>
+math_operation(5,2,"divide")&emsp;&emsp;&nbsp;10 / 20 = 0.5<br/>
+
+```{r}
+
+math_operation <- function(num1, num2, oper){
+  result <- switch(oper,
+                    "add" = paste(num1, "+", num2, "=", num1 + num2),
+                    "subtract" = paste(num1, "-", num2, "=", num1 - num2),
+                    "multiply" = paste(num1, "/", num2, "=", num1 * num2),
+                    "divide" = paste(num1, "/", num2, "=", num1 / num2),
+                    "Error occurred!"
+  )
+  print(result)
+}
+```
+
+**Q02.** Write a recursive function named **sum_digits** which takes an integer argument and sum its digits and return the sum. Here are some test cases:  
+
+**Function call**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Output**<br/>
+
+sum_digits(12345)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Sum of the digits of 12345 = 15<br/> 
+sum_digits(0)&emsp;&emsp;&nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Sum of the digits of 0 = 0<br/>
+sum_digits(123456789)&emsp;&emsp;&nbsp;&emsp;&emsp;&emsp;Sum of the digits of 123456789 = 45<br/>
+```{r}
+sum_digits <- function(n) {
+  original <- n        
+  n <- abs(n)          
+  
+  # recursive
+  helper <- function(x) {
+    if (x < 10) {
+      return(x)
+    }
+    return((x %% 10) + helper(x %/% 10))
+  }
+  
+  result <- helper(n)
+  cat("Sum of the digits of", original, "=", result, "\n")
+}
+
+```
+
+**Q03.** A matrix **mtrx** has been declared with numeric values. Use apply() function to double the value of each cell in **mtrx** and stored the result into a new matrix named **double_mtrx**. Use an inline function at FUN argument to achieve the transformation.  
+mtrx<- matrix(c(1:5, 6:10, 11:15), nrow = 5, ncol = 3)<br/>
+mtrx
+&emsp;**Output**<br/><br/>
+![Fig: Graph](Outputimg/Q3Output.png){#id .class width=18% height=18%}
+```{r}
+mtrx <- matrix(c(1:5, 6:10, 11:15), nrow = 5, ncol = 3)
+mtrx
+double_mtrx <- apply(mtrx, 2, function(x) x * 2)
+double_mtrx
+```
+**Q04.** Write a function named **pizza_toppings** which passes one **ellipsis** argument allowing for various toppings at function call.<br/>
+&emsp;**Output**<br/>
+![Fig: Graph](Outputimg/Q4Output.png){#id .class width=25% height=25%}
+```{r}
+pizza_toppings <- function(...) {
+  toppings <- list(...)
+  
+  cat("My favorite toppings are:\n")
+  
+  for (t in toppings) {
+    cat("- ", t, "\n", sep = "")
+  }
+}
+pizza_toppings("olive", "extra cheese", "red pepper")
+```
+**Q05.** This question implements the lazy eval concept. Write a function named **sum_of_vec** which takes two arguments **vec** and **sum_of**; **vec** is a vector of numbers and **sum_of** is to calculate the sum of the vec. The function will ignore the NA value (if there is any) in the vector and display the sum of the vector. The function header and output are given below.<br/><br/>
+**sum_of_vec <- function(vec, sum_of = sum(vec)){}**<br/> 
+**Function call**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Output**<br/>
+
+sum_of_vec(c(1,2,3,4,5))&emsp;&emsp;&emsp;&emsp;&emsp;The sum of vector is 15<br/> 
+sum_of_vec(c(1,2,3,4,NA))&emsp;&emsp;&emsp;&emsp;&nbsp;The sum of vector is 10<br/>
+
+```{r}
+sum_of_vec <- function(vec, sum_of = sum(vec, na.rm = TRUE)){
+  cat("The sum of vector is", sum_of, "\n")
+}
+sum_of_vec(c(1,2,3,4,5))
+sum_of_vec(c(1,2,3,4,NA))
+```
+
+**Q06.** Write a function named **deposit**. The function takes two arguments **amount** and **balance**. The balance has a default value of $500. If deposit amount is negative, throw errors with the message "Deposit amount cannot be negative!", otherwise add deposit amount to the balance and return the balance. This function does not use try clause.  
+**Function call**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Output**<br/>
+
+deposit(-100,500)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Error in deposit(-100, 500) : Deposit amount cannot be negative!<br/> 
+deposit(100,500)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;600<br/> 
+
+```{r}
+deposit <- function(amount, balance = 500){
+  if (amount < 0){
+    stop("Deposit amount cannot be negtive!")
+  }
+  return(balance + amount)
+}
+deposit(-100,500)
+deposit(100,500)
+```
+
+**Q07.** Declare a matrix named **mtrx** with value (1:25) in 5 rows and 5 columns. Write a function named **sum_matrix** which has one argument **m** for the matrix **mtrx**. Add a **txtProgressBar** with your choice of style and char display to monitor the completion status. Use nested for loop to perform the calculation and the progressbar should be set at the inner loop. Add a sleep of a quarter second (0.25) before setting the progressbar.<br/>
+**Output**<br/>
+
+***************************************************************************************************************************************************<br/>
+[1] 325
+
+
+```{r}
+mtrx <- matrix(1:25, nrow=5, ncol=5)
+sum_matrix <- function(m){
+  total <- 0
+  
+  progressBar <- txtProgressBar(min = 0, max = nrow(m) * ncol(m),
+                                style = 2, char = "*")
+  
+  counter <- 0 
+  
+  for(i in 1:nrow(m)){
+    for (j in 1:ncol(m)){
+      Sys.sleep(0.25)
+      total <- total + m[i, j]
+      
+      counter <- counter + 1
+      setTxtProgressBar(progressBar, counter)
+    }
+  }
+  close(progressBar)
+  return(total)
+}
+sum_matrix(mtrx)
+```
+
+**Q08.** Write a function named **withdrawal**. The function takes two arguments **amount** and **balance**. The balance has a default value of $200. If withdrawal amount is negative, display warning with the message "Withdrawal amount cannot be negative, reset the amoun to positive." and reset the withdrawal amount to positive. If the withdrawal amount is greater than the balance, throws an error with message "Insufficient fund". Otherwise deduct the withdrawal amount to the balance and return the balance. This function does use try clause outside of the function and set silent argument to TRUE.  
+
+**Output**<br/>
+
+Warning in withdrawal(-100, 500) : Withdrawal amount cannot be negative, reset the amount to positive.<br/> 
+"Error in withdrawal(500, 200) : Insufficient fund.\n"<br/>
+withdrawal(100, 200) : 100
+
+```{r}
+withdrawal <- function(amount, balance = 200){
+  if(amount < 0){
+    warning("Withdrawal amount cannot be negative, reset the amount to positive.")
+    amount<- abs(amount)
+  }
+  if(amount > balance){
+    stop("Insufficient fund.")
+  }
+  
+  return(balance - amount)
+}
+withdrawal(-100, 500)
+withdrawal(100, 200)
+```
+
+**Q09.** Write a function named **input_validation**. This function will validate the value passed in. If the value passed in is not numeric, it will display a message "Input data must be numeric." and return NA. Otherwise the valid input value is returned. Use **tryCatch()** to handle the error.<br/>
+**Function call**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Output**<br/>
+
+input_validation("2")&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Error: Input data must be numeric.NA<br/> 
+input_validation(2)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;"Valid input: 2"<br/>
+
+```{r}
+input_validation <- function(x){
+  tryCatch(
+    {
+       if (!is.numeric(x)){
+         stop("Input data must be numeric.")
+       }
+      paste("Valid input:", x)
+    },
+    error = function(e){
+      cat("Error:", e$message)
+      return(NA)
+    }
+  )
+}
+input_validation("2")
+input_validation(2)
+```
+
+**Q10.** The following function **count_vowel()** counts vowels in a string. Inside this function, there is a helper function **is_vowel()** has been defined. Complete the rest of the code in **count_vowel()** function.<br/>
+
+**Function call**&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Output**<br/>
+
+count_vowel("12e45a")&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;There are 2 vowel(s) in '12e45a'<br/> 
+count_vowel("123456")&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;There are 0 vowel(s) in '123456'<br/>
+count_vowel("abcdea")&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;There are 3 vowel(s) in 'abcdea'<br/>
+
+```{r}
+count_vowel <- function(str){
+  
+  is_vowel <- function(ch) {
+    ch <- tolower(ch)
+    return(ch %in% c("a", "e", "i", "o", "u"))
+  }
+  count <- 0
+  for (i in seq_along(strsplit(str, "")[[1]])){
+    ch <- strsplit(str, "")[[1]][i]
+    if (is_vowel(ch)) {
+      count <- count + 1
+    }
+  }
+  cat("There are ", count, " vowel(s) in '", str, "'", sep = "")
+}
+count_vowel("12e45a")
+count_vowel("123456")
+count_vowel("abcdea")
+```
+
